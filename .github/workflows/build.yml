@@ -25,17 +25,33 @@ jobs:
       run: |
         mkdir -p extracted_project
         unzip ChessVision.zip -d extracted_project
-        ls -R extracted_project
+        echo "=== CONTENTS ==="
+        ls -la extracted_project
 
     - name: Build APK with Gradle
       run: |
         cd extracted_project
-        # Ищем папку, где находится gradlew, и переходим в неё
-        PROJECT_DIR=$(find . -name "gradlew" -maxdepth 3 | xargs dirname)
-        echo "Found project dir: $PROJECT_DIR"
-        cd "$PROJECT_DIR"
-        chmod +x gradlew
-        ./gradlew assembleDebug
+        # Безопасно ищем gradlew по всей структуре
+        GRADLEW_PATH=$(find . -name "gradlew" -print -quit)
+        if [ -n "$GRADLEW_PATH" ]; then
+          PROJECT_DIR=$(dirname "$GRADLEW_PATH")
+          echo "Found gradlew in: $PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          chmod +x gradlew
+          ./gradlew assembleDebug
+        else
+          echo "gradlew not found, searching for build.gradle..."
+          BUILD_GRADLE=$(find . -name "build.gradle" -print -quit)
+          if [ -n "$BUILD_GRADLE" ]; then
+            PROJECT_DIR=$(dirname "$BUILD_GRADLE")
+            echo "Found build.gradle in: $PROJECT_DIR"
+            cd "$PROJECT_DIR"
+            gradle assembleDebug
+          else
+            echo "Error: Gradle files not found in archive!"
+            exit 1
+          fi
+        fi
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
