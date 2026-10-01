@@ -21,10 +21,8 @@ jobs:
     - name: Install unzip tool
       run: sudo apt-get update && sudo apt-get install -y unzip
 
-    - name: Extract and show files
+    - name: Extract project archive
       run: |
         mkdir -p extracted_project
         unzip ChessVision.zip -d extracted_project
-        echo "=== СМОТРИМ ЧТО ВНУТРИ ==="
-        find extracted_project -maxdepth 3
-concurrency: 
+        ls -la extracted_project
