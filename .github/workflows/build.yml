@@ -30,11 +30,11 @@ jobs:
           mkdir -p extracted_project
           unzip -o ChessVision.zip -d extracted_project
 
-      - name: Build APK
+            - name: Build       - name: Build APK
         run: |
-          cd extracted_project/ChessVision
-          gradle assembleDebug
-
+          cd extracted_project
+          chmod +x gradlew
+          ./gradlew assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
