@@ -18,8 +18,8 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Install unzip
-      run: apt-get update && apt-get install -y unzip
+    - name: Install unzip tool
+      run: sudo apt-get update && sudo apt-get install -y unzip
 
     - name: Extract project archive
       run: unzip ChessVision.zip -d extracted_project
@@ -27,7 +27,7 @@ jobs:
     - name: Build APK with Gradle
       run: |
         cd extracted_project
-        chmod +x gradlew
+        chmod +x gradlew || true
         ./gradlew assembleDebug
 
     - name: Upload APK artifact
