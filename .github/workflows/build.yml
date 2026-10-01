@@ -25,4 +25,15 @@ jobs:
       run: |
         mkdir -p extracted_project
         unzip ChessVision.zip -d extracted_project
-        ls -la extracted_project
+
+    - name: Build APK with Gradle
+      run: |
+        cd extracted_project/ChessVision
+        chmod +x gradlew
+        ./gradlew assembleDebug
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ChessVision-Debug
+        path: extracted_project/ChessVision/app/build/outputs/apk/debug/*.apk
