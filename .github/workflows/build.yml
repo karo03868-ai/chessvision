@@ -18,6 +18,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Install unzip tool
+      run: sudo apt-get update && sudo apt-get install -y unzip
+
     - name: Extract project archive
       run: |
         unzip ChessVision.zip -d extracted_project
@@ -33,3 +36,4 @@ jobs:
       with:
         name: ChessVision-Debug
         path: extracted_project/app/build/outputs/apk/debug/*.apk
+
