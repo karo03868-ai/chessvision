@@ -26,13 +26,10 @@ jobs:
       run: |
         mkdir -p extracted_project
         unzip ChessVision.zip -d extracted_project
-        ls -R extracted_project
 
     - name: Build APK with Gradle
       run: |
-        cd extracted_project
-        GRADLEW_PATH=$(find . -name "gradlew" | head -n 1)
-        cd $(dirname "$GRADLEW_PATH")
+        cd extracted_project/ChessVision
         chmod +x gradlew
         ./gradlew assembleDebug
 
@@ -41,4 +38,5 @@ jobs:
       with:
         name: ChessVision-Debug
         path: |
-          extracted_project/**/build/outputs/apk/debug/*.apk
+          extracted_project/ChessVision/app/build/outputs/apk/debug/*.apk
+ 
